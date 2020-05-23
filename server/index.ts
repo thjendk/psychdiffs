@@ -26,7 +26,7 @@ app.use(async (req: any, res, next) => {
 	if (token) {
 		try {
 			const tokenInfo = jwt.verify(token, secret) as User;
-			const user = await User.query().findById(tokenInfo.userId);
+			const user = await User.query().findById(tokenInfo.id);
 			if (!user) {
 				notUser();
 			} else {

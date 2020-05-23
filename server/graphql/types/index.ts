@@ -1,5 +1,6 @@
 import { gql } from 'apollo-server-express';
 import { userTypeDefs, userResolvers } from './user.type';
+import { diagnosisTypeDefs, diagnosisResolvers } from './diagnosis.type';
 
 const rootDefs = gql`
 	type Query {
@@ -11,6 +12,6 @@ const rootDefs = gql`
 	}
 `;
 
-export const typeDefs = [rootDefs, userTypeDefs];
+export const typeDefs = [rootDefs, userTypeDefs, diagnosisTypeDefs];
 
-export const resolvers = [userResolvers];
+export const resolvers = [userResolvers, diagnosisResolvers];
