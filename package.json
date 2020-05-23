@@ -44,7 +44,8 @@
     "dev": "npm-run-all --parallel server client",
     "generate": "graphql-codegen --config codegen.yml",
     "build:server": "tsc -p server/tsconfig.json",
-    "build:client": "react-scripts build"
+    "build:client": "react-scripts build",
+    "postbuild": "cd server && knex migrate:latest"
   },
   "proxy": "http://localhost:3001",
   "eslintConfig": {
