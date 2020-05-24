@@ -16,7 +16,7 @@ const DiffInput: React.SFC<DiffInputProps> = () => {
 	const diagnoses = useSelector((state: ReduxState) => state.diagnoses.diagnoses);
 	const options = diagnoses
 		.slice()
-		.filter((d) => !diagnosis.differentials.map((d) => d.diagnosis.id).includes(d.id) && diagnosis.id !== d.id)
+		.filter((d) => !diagnosis.differentialsHere.map((d) => d.diagnosis.id).includes(d.id) && diagnosis.id !== d.id)
 		.sort((a, b) => a.name.localeCompare(b.name))
 		.map((d) => ({ value: d.id, label: `${d.icd}: ${d.name}` }));
 

@@ -9,7 +9,6 @@ interface Diagnosis extends DiagnosisType {}
 class Diagnosis {
 	static differentialFragment = gql`
 		fragment Differential on Differential {
-			description
 			diagnosis {
 				id
 				name
@@ -25,7 +24,11 @@ class Diagnosis {
 			name
 			icd
 			page
-			differentials {
+			differentialsHere {
+				description
+				...Differential
+			}
+			differentialsThere {
 				...Differential
 			}
 		}

@@ -40,13 +40,18 @@ const DiagnosisRow: React.SFC<DiagnosisRowProps> = () => {
 				{diagnosis.name} ({diagnosis.icd}, s. {diagnosis.page})
 			</Card.Header>
 			<Card.Body>
+				<p>Tilføjet her:</p>
 				<ul>
-					{diagnosis.differentials.map((d) => (
+					{diagnosis.differentialsHere.map((d) => (
+						<DifferentialRow belongs differential={d} />
+					))}
+				</ul>
+				<hr />
+				<p>Tilføjet fra andre steder:</p>
+				<ul>
+					{diagnosis.differentialsThere.map((d) => (
 						<DifferentialRow differential={d} />
 					))}
-					{diagnosis.differentials.length === 0 && (
-						<li style={{ color: 'grey' }}>Ingen differentialdiagnoser endnu...</li>
-					)}
 				</ul>
 				<hr />
 				{user && (

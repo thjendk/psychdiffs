@@ -21,7 +21,8 @@ export const diagnosisTypeDefs = gql`
 		name: String
 		icd: String
 		page: String
-		differentials: [Differential]
+		differentialsHere: [Differential]
+		differentialsThere: [Differential]
 	}
 
 	type Differential {
@@ -100,14 +101,17 @@ export const diagnosisResolvers: Resolvers = {
 			const diagnosis = await ctx.diagnosisLoader.load(id);
 			return diagnosis.page;
 		},
-		differentials: async ({ id }, args, ctx) => {
-			const differentials = await Differential.query().where({ diagnosisId: id }).orWhere({ differentialId: id });
+		differentialsHere: async ({ id }, args, ctx) => {
+			const differentials = await Differential.query().where({ diagnosisId: id });
+			return differentials.map((d) => ({ diagnosis: { id: d.differentialId }, description: d.description }));
+		},
+		differentialsThere: async ({ id }, args, ctx) => {
+			const differentialsHere = Differential.query().where({ diagnosisId: id }).select('differentialId');
 
-			return differentials.map((d) => {
-				if (d.diagnosisId === id) return { diagnosis: { id: d.differentialId }, description: d.description };
-				if (d.differentialId === id) return { diagnosis: { id: d.diagnosisId }, description: d.description };
-				return null;
-			});
+			const differentials = await Differential.query()
+				.where({ differentialId: id })
+				.whereNotIn('diagnosisId', differentialsHere);
+			return differentials.map((d) => ({ diagnosis: { id: d.diagnosisId } }));
 		}
 	}
 };

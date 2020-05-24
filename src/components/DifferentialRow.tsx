@@ -9,9 +9,10 @@ import { ReduxState } from 'slices';
 
 export interface DifferentialRowProps {
 	differential: Differential;
+	belongs?: boolean;
 }
 
-const DifferentialRow: React.SFC<DifferentialRowProps> = ({ differential: d }) => {
+const DifferentialRow: React.SFC<DifferentialRowProps> = ({ differential: d, belongs }) => {
 	const user = useSelector((state: ReduxState) => state.auth.user);
 	const dispatch = useDispatch();
 	const [removing, setRemoving] = useState(false);
@@ -28,10 +29,15 @@ const DifferentialRow: React.SFC<DifferentialRowProps> = ({ differential: d }) =
 					onClick={() => dispatch(diagnosesReducer.actions.setSearch(d.diagnosis.name))}
 					style={{ margin: '0' }}
 				>
-					{d.diagnosis.name} ({d.diagnosis.icd}, s. {d.diagnosis.page}):{' '}
-					<span style={{ color: 'grey' }}>{d.description}</span>
+					{d.diagnosis.name} ({d.diagnosis.icd}
+					{d.diagnosis.page && <span>, s. {d.diagnosis.page}</span>})
+					{d.description && (
+						<span>
+							: <span style={{ color: 'grey' }}>{d.description}</span>
+						</span>
+					)}{' '}
 				</p>
-				{removing && user && (
+				{belongs && user && removing && (
 					<span style={{ marginLeft: '1rem' }}>
 						<ConfirmationButton
 							title="Fjern differential diagnose"

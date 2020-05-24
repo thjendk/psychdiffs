@@ -24,7 +24,8 @@ export type Diagnosis = {
   name?: Maybe<Scalars['String']>;
   icd?: Maybe<Scalars['String']>;
   page?: Maybe<Scalars['String']>;
-  differentials?: Maybe<Array<Maybe<Differential>>>;
+  differentialsHere?: Maybe<Array<Maybe<Differential>>>;
+  differentialsThere?: Maybe<Array<Maybe<Differential>>>;
 };
 
 export type DiagnosisInput = {
@@ -225,7 +226,8 @@ export type DiagnosisResolvers<ContextType = Context, ParentType extends Resolve
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   icd?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   page?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  differentials?: Resolver<Maybe<Array<Maybe<ResolversTypes['Differential']>>>, ParentType, ContextType>,
+  differentialsHere?: Resolver<Maybe<Array<Maybe<ResolversTypes['Differential']>>>, ParentType, ContextType>,
+  differentialsThere?: Resolver<Maybe<Array<Maybe<ResolversTypes['Differential']>>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 }>;
 
