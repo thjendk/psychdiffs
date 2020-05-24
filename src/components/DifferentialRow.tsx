@@ -22,13 +22,12 @@ const DifferentialRow: React.SFC<DifferentialRowProps> = ({ differential: d }) =
 	};
 
 	return (
-		<li
-			onMouseOver={() => setRemoving(true)}
-			onMouseLeave={() => setRemoving(false)}
-			onClick={() => dispatch(diagnosesReducer.actions.setSearch(d.diagnosis.name))}
-		>
+		<li onMouseOver={() => setRemoving(true)} onMouseLeave={() => setRemoving(false)}>
 			<div style={{ display: 'flex', cursor: 'pointer' }}>
-				<p style={{ margin: '0' }}>
+				<p
+					onClick={() => dispatch(diagnosesReducer.actions.setSearch(d.diagnosis.name))}
+					style={{ margin: '0' }}
+				>
 					{d.diagnosis.name} ({d.diagnosis.icd}, s. {d.diagnosis.page}):{' '}
 					<span style={{ color: 'grey' }}>{d.description}</span>
 				</p>
