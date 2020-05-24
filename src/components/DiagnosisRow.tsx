@@ -19,7 +19,10 @@ const DiagnosisRow: React.SFC<DiagnosisRowProps> = () => {
 	const search = useSelector((state: ReduxState) => state.diagnoses.search);
 
 	const exists = (d: Diagnosis) => {
-		if (!d.name.toLowerCase().includes(search.toLowerCase()) && !d.icd.toLowerCase().includes(search.toLowerCase()))
+		if (
+			!d.name.toLowerCase().includes(search.toLowerCase()) &&
+			!d.icd?.toLowerCase().includes(search.toLowerCase())
+		)
 			return false;
 		return true;
 	};
