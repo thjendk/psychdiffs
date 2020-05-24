@@ -16,7 +16,7 @@ const DiffTable: React.SFC<DiffTableProps> = () => {
 	const search = useSelector((state: ReduxState) => state.diagnoses.search);
 	const diagnoses = useSelector((state: ReduxState) => state.diagnoses.diagnoses)
 		.slice()
-		.sort((a, b) => a.icd.localeCompare(b.icd));
+		.sort((a, b) => a.icd?.localeCompare(b?.icd));
 
 	useEffect(() => {
 		Diagnosis.fetch();
