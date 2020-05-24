@@ -53,23 +53,24 @@ const DiagnosisRow: React.SFC<DiagnosisRowProps> = () => {
 						<DifferentialRow differential={d} />
 					))}
 				</ul>
-				<hr />
 				{user && (
-					<div style={{ display: 'flex' }}>
-						<Button onClick={() => setAdding(!adding)} size="sm" variant="outline-secondary">
-							{adding ? 'Annuller' : 'Tilføj differentialdiagnose'}
-						</Button>
-						<Button
-							style={{ marginLeft: '5px' }}
-							size="sm"
-							variant="outline-info"
-							onClick={() => setEditing(!editing)}
-						>
-							Rediger
-						</Button>
-					</div>
+					<>
+						<hr />
+						<div style={{ display: 'flex' }}>
+							<Button onClick={() => setAdding(!adding)} size="sm" variant="outline-secondary">
+								{adding ? 'Annuller' : 'Tilføj differentialdiagnose'}
+							</Button>
+							<Button
+								style={{ marginLeft: '5px' }}
+								size="sm"
+								variant="outline-info"
+								onClick={() => setEditing(!editing)}
+							>
+								Rediger
+							</Button>
+						</div>
+					</>
 				)}
-
 				{adding && (
 					<>
 						<Divider />
