@@ -11,8 +11,8 @@ export interface DiagnosisInputProps {
 
 const DiagnosisInput: React.SFC<DiagnosisInputProps> = ({ onSubmit }) => {
 	const user = useSelector((state: ReduxState) => state.auth.user);
-	const [adding, setAdding] = useState(false);
 	const diagnosis = useContext(DiagnosisContext);
+	const [adding, setAdding] = useState(!!diagnosis);
 	const [icd, setIcd] = useState(diagnosis?.icd);
 	const [name, setName] = useState(diagnosis?.name);
 	const [page, setPage] = useState(diagnosis?.page);
