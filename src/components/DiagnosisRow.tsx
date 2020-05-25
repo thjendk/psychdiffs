@@ -7,7 +7,6 @@ import DiffInput from './DiffInput';
 import { Divider } from './Layout';
 import DiagnosisInput from './DiagnosisInput';
 import DifferentialRow from './DifferentialRow';
-import Diagnosis from 'classes/diagnosis.model';
 import { subDifferentials } from 'utils';
 
 export interface DiagnosisRowProps {}
@@ -18,23 +17,7 @@ const DiagnosisRow: React.SFC<DiagnosisRowProps> = () => {
 	const [adding, setAdding] = useState(false);
 	const [editing, setEditing] = useState(false);
 	const diagnosis = useContext(DiagnosisContext);
-	const search = useSelector((state: ReduxState) => state.diagnoses.search);
 
-	const exists = (d: Diagnosis) => {
-		if (
-			!d.name.toLowerCase().includes(search.toLowerCase()) &&
-			!d.icd?.toLowerCase().includes(search.toLowerCase())
-		)
-			return false;
-		return true;
-	};
-
-	const isInSearch = () => {
-		if (!exists(diagnosis)) return false;
-		return true;
-	};
-
-	if (!isInSearch()) return null;
 	if (editing) return <DiagnosisInput onLeaveEdit={() => setEditing(false)} />;
 	return (
 		<Card style={{ margin: '5px auto' }}>

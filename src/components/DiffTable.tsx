@@ -14,9 +14,8 @@ export interface DiffTableProps {}
 const DiffTable: React.SFC<DiffTableProps> = () => {
 	const dispatch = useDispatch();
 	const search = useSelector((state: ReduxState) => state.diagnoses.search);
-	const diagnoses = useSelector((state: ReduxState) => state.diagnoses.diagnoses)
-		.slice()
-		.sort((a, b) => a.icd?.localeCompare(b?.icd));
+	const diagnoses = useSelector((state: ReduxState) => state.diagnoses.diagnoses);
+	const sortedDiagnoses = diagnoses.slice().sort((a, b) => a.icd?.localeCompare(b?.icd));
 
 	useEffect(() => {
 		Diagnosis.fetch();
@@ -26,6 +25,30 @@ const DiffTable: React.SFC<DiffTableProps> = () => {
 		}, 1000 * 30);
 	}, []);
 
+	const exists = (d: Diagnosis): boolean => {
+		if (
+			!d.name.toLowerCase().includes(search.toLowerCase()) &&
+			!d.icd?.toLowerCase().includes(search.toLowerCase())
+		)
+			return false;
+		return true;
+	};
+
+	const isInSearch = (d: Diagnosis): boolean => {
+		d = diagnoses.find((diag) => diag.id === d.id);
+
+		if (!exists(d)) return false;
+		return true;
+	};
+
+	const childInSearch = (d: Diagnosis): boolean => {
+		d = diagnoses.find((diag) => diag.id === d.id);
+
+		if (d.children.length === 0) return false;
+		if (d.children.some((d) => isInSearch(d))) return true;
+		return d.children.some((d) => childInSearch(d));
+	};
+
 	return (
 		<div>
 			<Form.Control
@@ -33,8 +56,8 @@ const DiffTable: React.SFC<DiffTableProps> = () => {
 				onChange={(e) => dispatch(diagnosesReducer.actions.setSearch(e.target.value))}
 				value={search}
 			/>
-			{diagnoses
-				.filter((d) => !d.parent)
+			{sortedDiagnoses
+				.filter((d) => !d.parent && (isInSearch(d) || childInSearch(d)))
 				.map((d) => (
 					<div style={{ margin: '1rem auto' }}>
 						<DiagnosisContext.Provider value={d}>
