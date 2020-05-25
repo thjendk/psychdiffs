@@ -22,8 +22,10 @@ export type Diagnosis = {
   name?: Maybe<Scalars['String']>;
   icd?: Maybe<Scalars['String']>;
   page?: Maybe<Scalars['String']>;
+  parent?: Maybe<Diagnosis>;
   differentialsHere?: Maybe<Array<Maybe<Differential>>>;
   differentialsThere?: Maybe<Array<Maybe<Differential>>>;
+  children?: Maybe<Array<Maybe<Diagnosis>>>;
 };
 
 export type DiagnosisInput = {

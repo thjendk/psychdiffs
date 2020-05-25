@@ -8,11 +8,13 @@ import { Divider } from './Layout';
 import DiagnosisInput from './DiagnosisInput';
 import DifferentialRow from './DifferentialRow';
 import Diagnosis from 'classes/diagnosis.model';
+import { subDifferentials } from 'utils';
 
 export interface DiagnosisRowProps {}
 
 const DiagnosisRow: React.SFC<DiagnosisRowProps> = () => {
 	const user = useSelector((state: ReduxState) => state.auth.user);
+	const diagnoses = useSelector((state: ReduxState) => state.diagnoses.diagnoses);
 	const [adding, setAdding] = useState(false);
 	const [editing, setEditing] = useState(false);
 	const diagnosis = useContext(DiagnosisContext);
@@ -33,7 +35,7 @@ const DiagnosisRow: React.SFC<DiagnosisRowProps> = () => {
 	};
 
 	if (!isInSearch()) return null;
-	if (editing) return <DiagnosisInput onSubmit={() => setEditing(false)} />;
+	if (editing) return <DiagnosisInput onLeaveEdit={() => setEditing(false)} />;
 	return (
 		<Card style={{ margin: '5px auto' }}>
 			<Card.Header>
@@ -50,6 +52,13 @@ const DiagnosisRow: React.SFC<DiagnosisRowProps> = () => {
 				<p>Tilføjet fra andre steder:</p>
 				<ul>
 					{diagnosis.differentialsThere.map((d) => (
+						<DifferentialRow differential={d} />
+					))}
+				</ul>
+				<hr />
+				<p>Tilføjet fra subdiagnoser:</p>
+				<ul>
+					{subDifferentials(diagnosis).map((d) => (
 						<DifferentialRow differential={d} />
 					))}
 				</ul>
@@ -78,6 +87,20 @@ const DiagnosisRow: React.SFC<DiagnosisRowProps> = () => {
 					</>
 				)}
 			</Card.Body>
+			{diagnosis.children.length > 0 && (
+				<Card.Footer>
+					<p>Underdiagnoser:</p>
+					{diagnosis.children.map((d) => {
+						d = diagnoses.find((diag) => diag.id === d.id);
+
+						return (
+							<DiagnosisContext.Provider value={d}>
+								<DiagnosisRow />
+							</DiagnosisContext.Provider>
+						);
+					})}
+				</Card.Footer>
+			)}
 		</Card>
 	);
 };

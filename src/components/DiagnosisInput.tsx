@@ -6,10 +6,10 @@ import { ReduxState } from 'slices';
 import { useSelector } from 'react-redux';
 
 export interface DiagnosisInputProps {
-	onSubmit?: Function;
+	onLeaveEdit?: Function;
 }
 
-const DiagnosisInput: React.SFC<DiagnosisInputProps> = ({ onSubmit }) => {
+const DiagnosisInput: React.SFC<DiagnosisInputProps> = ({ onLeaveEdit }) => {
 	const user = useSelector((state: ReduxState) => state.auth.user);
 	const diagnosis = useContext(DiagnosisContext);
 	const [adding, setAdding] = useState(!!diagnosis);
@@ -26,12 +26,13 @@ const DiagnosisInput: React.SFC<DiagnosisInputProps> = ({ onSubmit }) => {
 	const handleSubmit = async () => {
 		await Diagnosis.create({ icd, name, page, id: diagnosis?.id });
 		clearForm();
-		if (onSubmit) onSubmit();
+		if (onLeaveEdit) onLeaveEdit();
 	};
 
 	const handleClose = () => {
 		clearForm();
 		setAdding(false);
+		if (onLeaveEdit) onLeaveEdit();
 	};
 
 	if (!user) return null;

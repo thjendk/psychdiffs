@@ -5,6 +5,7 @@ interface Diagnosis {
 	name: string;
 	icd: string;
 	page: string;
+	parentId: number;
 }
 
 class Diagnosis extends Model {

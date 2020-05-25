@@ -24,6 +24,12 @@ class Diagnosis {
 			name
 			icd
 			page
+			parent {
+				id
+			}
+			children {
+				id
+			}
 			differentialsHere {
 				description
 				...Differential

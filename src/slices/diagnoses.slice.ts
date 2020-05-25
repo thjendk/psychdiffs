@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Diagnosis } from 'types/generated';
-import { insertOrReplace, removeFromState } from './utils';
+import { insertOrReplace, removeFromState } from '../utils';
 
 const initialState = {
 	diagnoses: [] as Diagnosis[],

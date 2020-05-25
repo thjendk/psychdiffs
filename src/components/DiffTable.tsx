@@ -33,13 +33,15 @@ const DiffTable: React.SFC<DiffTableProps> = () => {
 				onChange={(e) => dispatch(diagnosesReducer.actions.setSearch(e.target.value))}
 				value={search}
 			/>
-			{diagnoses.map((d) => (
-				<div style={{ margin: '1rem auto' }}>
-					<DiagnosisContext.Provider value={d}>
-						<DiagnosisRow />
-					</DiagnosisContext.Provider>
-				</div>
-			))}
+			{diagnoses
+				.filter((d) => !d.parent)
+				.map((d) => (
+					<div style={{ margin: '1rem auto' }}>
+						<DiagnosisContext.Provider value={d}>
+							<DiagnosisRow />
+						</DiagnosisContext.Provider>
+					</div>
+				))}
 			<Divider />
 			<DiagnosisInput />
 		</div>

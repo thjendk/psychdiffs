@@ -21,8 +21,10 @@ export const diagnosisTypeDefs = gql`
 		name: String
 		icd: String
 		page: String
+		parent: Diagnosis
 		differentialsHere: [Differential]
 		differentialsThere: [Differential]
+		children: [Diagnosis]
 	}
 
 	type Differential {
@@ -101,6 +103,11 @@ export const diagnosisResolvers: Resolvers = {
 			const diagnosis = await ctx.diagnosisLoader.load(id);
 			return diagnosis.page;
 		},
+		parent: async ({ id }, args, ctx) => {
+			const diagnosis = await ctx.diagnosisLoader.load(id);
+			if (!diagnosis.parentId) return null;
+			return { id: diagnosis.parentId };
+		},
 		differentialsHere: async ({ id }, args, ctx) => {
 			const differentials = await Differential.query().where({ diagnosisId: id });
 			return differentials.map((d) => ({ diagnosis: { id: d.differentialId }, description: d.description }));
@@ -112,6 +119,10 @@ export const diagnosisResolvers: Resolvers = {
 				.where({ differentialId: id })
 				.whereNotIn('diagnosisId', differentialsHere);
 			return differentials.map((d) => ({ diagnosis: { id: d.diagnosisId } }));
+		},
+		children: async ({ id }) => {
+			const diagnoses = await Diagnosis.query().where({ parentId: id });
+			return diagnoses.map((d) => ({ id: d.id }));
 		}
 	}
 };
