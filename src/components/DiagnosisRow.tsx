@@ -27,23 +27,32 @@ const DiagnosisRow: React.SFC<DiagnosisRowProps> = () => {
 			<Card.Body>
 				<p>Tilføjet her:</p>
 				<ul>
-					{diagnosis.differentialsHere.map((d) => (
-						<DifferentialRow belongs differential={d} />
-					))}
+					{diagnosis.differentialsHere
+						.slice()
+						.sort((a, b) => a.diagnosis.icd?.localeCompare(b.diagnosis.icd))
+						.map((d) => (
+							<DifferentialRow belongs differential={d} />
+						))}
 				</ul>
 				<hr />
 				<p>Tilføjet fra andre steder:</p>
 				<ul>
-					{diagnosis.differentialsThere.map((d) => (
-						<DifferentialRow differential={d} />
-					))}
+					{diagnosis.differentialsThere
+						.slice()
+						.sort((a, b) => a.diagnosis.icd?.localeCompare(b.diagnosis.icd))
+						.map((d) => (
+							<DifferentialRow differential={d} />
+						))}
 				</ul>
 				<hr />
 				<p>Tilføjet fra subdiagnoser:</p>
 				<ul>
-					{subDifferentials(diagnosis).map((d) => (
-						<DifferentialRow differential={d} />
-					))}
+					{subDifferentials(diagnosis)
+						.slice()
+						.sort((a, b) => a.diagnosis.icd?.localeCompare(b.diagnosis.icd))
+						.map((d) => (
+							<DifferentialRow differential={d} />
+						))}
 				</ul>
 				{user && (
 					<>
